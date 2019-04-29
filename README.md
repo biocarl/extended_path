@@ -43,6 +43,7 @@ Internal sampling rate for the path data is currently hardcoded. This might noti
 Here is increasingly growing list with all available parameters and their visual effects. The animation serves for illustration purposes only. For creating such animations I would like to refer to [drawing_animation](https://github.com/biocarl/drawing_animation), another package of mine.
 
 | Effect            | Example                            |
-| :---             |    :---:                       |
+| :---:             |    :---:                       |
+| `ContinousLine` <br> *(default)* | <img src="https://github.com/biocarl/img/raw/master/extended_path/continous_line.gif" width="600px">   |
 | `DashPathEffect` | <img src="https://github.com/biocarl/img/raw/master/extended_path/dashed_line.gif" width="600px">   |
 | `PathDashPathEffect` | <img src="https://github.com/biocarl/img/raw/master/extended_path/path_dash_line.gif" width="600px">   |

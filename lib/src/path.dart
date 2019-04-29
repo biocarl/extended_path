@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:typed_data';
+import 'package:collection/collection.dart';
 import 'path_effect.dart';
 import 'dart:math';
 
