@@ -20,7 +20,7 @@ The API design for the PathEffect classes is inspired by [PathEffect](https://de
 - Any feedback on the overall API design is really appreciated!
 
 ## Current limitations
-- Internal sampling rate for the path data is currently hardcoded. This might noticeable when sampling a big amount of path data (bad performance) and also for very small paths (edgy lines). For change the sampling rate use `setDelta`
+Internal sampling rate for the path data is currently hardcoded. This might noticeable when sampling a big amount of path data (bad performance) and also for very small paths (edgy lines).
 
 ## TODO
 - `PathEffect`: How to determine optimal `_delta` value for sampling. Also consider defining `_delta` over amount of resulting sampling points (required for path morping). Your Path is discrete now: What happens when the Path is scaled, consider resampling dynamically.
