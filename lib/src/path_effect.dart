@@ -97,7 +97,7 @@ abstract class _DashPathEffect extends PathEffect {
   _DashPathEffect(List<int> dashArray, [this.dashOffset]) {
     this._dashArray = dashArray.map((i) => (i / super.delta).round()).toList();
     assert(this._dashArray.every((dash) => dash > 0),
-        "Length of alternating strokes and gaps has to be bigger than 0.");
+        "Length of alternating strokes and gaps has to be greater 0.");
     assert(this._dashArray.length % 2 == 0,
         "The number of elements in the dashArray has to be even.");
     createDashOffset();
@@ -118,6 +118,9 @@ abstract class _DashPathEffect extends PathEffect {
 
   /// Denotes the terminating offset of of dash element
   Offset end = Offset.zero;
+
+  /// Denotes the prev process offset
+  Offset _prev;
 
   @override
   Path onSegmentFinished({bool isClosed = false}) {
@@ -144,7 +147,14 @@ abstract class _DashPathEffect extends PathEffect {
   bool getNextPath(Offset offset) {
     //Get first and last offset for one dash (empty or not)
     if (dashCircleIndex == 0 || isDashOffset) {
-      this.start = offset;
+      //end of prev dash cycle is start of next cycle
+      if(this._prev != null){
+        this.start = this._prev;
+        iterateCounters(); //we already started dash cycle one offset earlier so we have to update the counting state
+      }else{
+        this.start = offset; //case for first non-empty dash cycle
+      }
+
       this.end = null;
       this.isDashOffset = false;
     }
@@ -155,16 +165,23 @@ abstract class _DashPathEffect extends PathEffect {
 
     //Determines if gap or stroke dash
     this.draw = dashArrayCycleIndex % 2 == 0;
-
     iterateCounters();
+
+    //end of prev cycle is start of next cycle
+    if(this.end != null){
+      this._prev = offset;
+    }
     return draw && (end != null);
   }
+
+
 
   void iterateCounters() {
     //Init next dash cycle of dash pattern
     if (dashCircleIndex == _dashArray[dashArrayCycleIndex] - 1) {
       dashCircleIndex = -1;
       dashArrayCycleIndex++;
+      // dashCircleIndex--; //end of prev cycle is start of next cycle
     }
 
     //Init new dash pattern cycle

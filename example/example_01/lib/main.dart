@@ -36,10 +36,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // Build your very special path :-)
     PathExtended pe = PathExtended();
-    // Path element = circle(0,40.0);
+    // Path element = circle(0,0.5);
     // pe.addPath(circle(0,30.0),Offset.zero);
     pe.addPath(circle(0, 5.0), Offset.zero);
-    // pe.applyPathEffect(PathDashPathEffect(element,[2,2]));
+    pe.applyPathEffect(PathDashPathEffect(element,[1,1]));
+
 
     //scale canvas
     Size media = MediaQuery.of(context).size;
