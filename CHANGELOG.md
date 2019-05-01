@@ -6,3 +6,9 @@
 
 * Fix import
 * Add example for `ContinousLine`
+
+
+## [0.0.3]
+
+* Adding DiscretePathEffect
+* Minor fixes

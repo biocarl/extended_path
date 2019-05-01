@@ -1,6 +1,6 @@
 name: extended_path
 description: A Flutter Path object with superpowers, including re-sampling, dashed lines and a lot more!
-version: 0.0.2
+version: 0.0.3
 author: Carl Hauck <cahaucks@gmail.com>
 repository: https://github.com/biocarl/extended_path
 homepage: https://twitter.com/cahaucks
