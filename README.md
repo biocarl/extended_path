@@ -4,6 +4,16 @@ This library encapsulates the `PathExtended` object which serves as a extension 
 
 :construction: **This library is still at early-stage development and might be subject to breaking API changes!!!** :construction:
 
+## Supported PathEffects
+Here is increasingly growing list with all available parameters and their visual effects. The animation serves for illustration purposes only. For creating such animations I would like to refer to [drawing_animation](https://github.com/biocarl/drawing_animation), another package of mine.
+
+| Effect            | Example                            |
+| :---:             |    :---:                       |
+| `ContinousLine` <br> *(default)* | <img src="https://github.com/biocarl/img/raw/master/extended_path/continous_line.gif" width="600px">   |
+| `DiscretePathEffect` | <img src="https://github.com/biocarl/img/raw/master/extended_path/descrete_line.gif" width="600px">   |
+| `DashPathEffect` | <img src="https://github.com/biocarl/img/raw/master/extended_path/dashed_line.gif" width="600px">   |
+| `PathDashPathEffect` | <img src="https://github.com/biocarl/img/raw/master/extended_path/path_dash_line.gif" width="600px">   |
+
 ## Getting Started
 
 ```dart
@@ -29,21 +39,11 @@ Internal sampling rate for the path data is currently hardcoded. This might noti
 - `DashPathEffect`: Double dash pattern when odd (for now blocked by assert)
 
 ## Milestones
-
 - [x] PathEffect: [DashPathEffect](https://developer.android.com/reference/android/graphics/DashPathEffect.html)
-- [ ] PathEffect: [DiscretePathEffect](https://developer.android.com/reference/android/graphics/DiscretePathEffect.html)
+- [x] PathEffect: [DiscretePathEffect](https://developer.android.com/reference/android/graphics/DiscretePathEffect.html)
 - [x] PathEffect: [PathDashPathEffect](https://developer.android.com/reference/android/graphics/PathDashPathEffect.html)
 - [ ] PathModifier: sin-wave
 - [ ] PathModifier: zick-zack
 - [ ] PathModifier: smoothing/simplify
 - [ ] *(static)* Lerp between two Paths/ Morphing
 - [ ] `PathExtendedBuilder` for better performance
-
-## Supported PathEffects
-Here is increasingly growing list with all available parameters and their visual effects. The animation serves for illustration purposes only. For creating such animations I would like to refer to [drawing_animation](https://github.com/biocarl/drawing_animation), another package of mine.
-
-| Effect            | Example                            |
-| :---:             |    :---:                       |
-| `ContinousLine` <br> *(default)* | <img src="https://github.com/biocarl/img/raw/master/extended_path/continous_line.gif" width="600px">   |
-| `DashPathEffect` | <img src="https://github.com/biocarl/img/raw/master/extended_path/dashed_line.gif" width="600px">   |
-| `PathDashPathEffect` | <img src="https://github.com/biocarl/img/raw/master/extended_path/path_dash_line.gif" width="600px">   |

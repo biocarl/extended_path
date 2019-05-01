@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'dart:math';
+import 'package:vector_math/vector_math_64.dart';
 
 /// Change sampling rate _delta. For internal use.
 void setDelta(PathEffect pathEffect, double delta) {
@@ -54,6 +56,71 @@ class ContinousLine extends PathEffect {
   }
 }
 
+/// Chop the path into lines of [segmentLength], randomly deviating from the original path by [deviationAngle].
+///
+/// Reasonable values for the  [deviationAngle] usually range from 0 to 45 degrees.
+class DiscretePathEffect extends _DashPathEffect{
+  DiscretePathEffect(int segmentLength, this.deviationAngle)
+      : super ([segmentLength,segmentLength]);
+
+  /// Denotes the maximum angle of deviation for each segment
+  final double deviationAngle;
+  /// Denotes the previous already deviated Offset
+  Offset _prevD;
+  /// Denotes first Offset of segment
+  Offset _first;
+
+  @override
+  Path transform(Offset offset, Offset normal) {
+    Path path;
+    //iterate to next Offset
+    getNextPath(offset);
+    if (this.end != null) { //dashed line without gaps
+      Offset paintFrom, paintTo;
+      path = Path();
+      if(this._prevD == null){
+        paintFrom = this.start; //first offset
+        this._first = this.start;
+      }else{
+        paintFrom = this._prevD;
+      }
+
+      //Deviate next end of line
+      paintTo = _rotate(end, paintFrom, (((Random().nextInt(1000)+1) % deviationAngle)/360 * 2* pi));
+      path.moveTo(paintFrom.dx,paintFrom.dy);
+      path.lineTo(paintTo.dx,paintTo.dy);
+      this._prevD = paintTo;
+    }
+    return path;
+  }
+
+  Offset _rotate(Offset point, Offset pivot, double angle)
+  {
+    double s = sin(angle);
+    double c = cos(angle);
+    //to origin
+    point -= pivot;
+    // rotate
+    double xr = point.dx * c - point.dy * s;
+    double yr = point.dx * s + point.dy * c;
+    // back to local
+    return Offset (xr + pivot.dx, yr + pivot.dy);
+  }
+
+  @override
+  Path onSegmentFinished({bool isClosed = false}) {
+    // Connect them by a simple line
+    Path path;
+    if(isClosed && this._first != null){
+      path = Path();
+      path.moveTo(this._prevD.dx,this._prevD.dy);
+      path.lineTo(this._first.dx,this._first.dy);
+    }
+    this._first = null;
+    return path;
+  }
+}
+
 /// Transforms the stroke into a dashed representation.
 class DashPathEffect extends _DashPathEffect {
   /// Constructs a DashPathEffect.
@@ -67,8 +134,8 @@ class DashPathEffect extends _DashPathEffect {
     Path path;
     if (getNextPath(offset)) {
       path = Path()
-        ..moveTo(this.start.dx, this.start.dy)
-        ..lineTo(this.end.dx, this.end.dy);
+          ..moveTo(this.start.dx, this.start.dy)
+          ..lineTo(this.end.dx, this.end.dy);
     }
     return path;
   }
@@ -119,7 +186,7 @@ abstract class _DashPathEffect extends PathEffect {
   /// Denotes the terminating offset of of dash element
   Offset end = Offset.zero;
 
-  /// Denotes the prev process offset
+  /// Denotes the prev processed offset
   Offset _prev;
 
   @override
