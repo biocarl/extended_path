@@ -36,9 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // Build your very special path :-)
     PathExtended pe = PathExtended();
-    Path element = circle(0,0.5);
+    Path element = circle(0, 0.5);
     pe.addPath(circle(0, 50.0), Offset.zero);
-    pe.applyPathEffect(PathDashPathEffect(element,[1,1]));
+    pe.applyPathEffect(PathDashPathEffect(element, [1, 1]));
     // pe.applyPathEffect(DiscretePathEffect(1,45));
 
     //scale canvas

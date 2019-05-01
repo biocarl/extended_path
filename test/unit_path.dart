@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:extended_path/extended_path.dart';
 import 'package:extended_path/src/path.dart';
+import 'package:vector_math/vector_math_64.dart';
 import 'dart:ui';
 import 'utils.dart';
 
