@@ -260,8 +260,3 @@ abstract class _DashPathEffect extends PathEffect {
     dashCircleIndex++;
   }
 }
-
-//TODO implement
-// class DiscretePathEffect extends PathEffect{
-// https://developer.android.com/reference/android/graphics/DiscretePathEffect.html
-// }

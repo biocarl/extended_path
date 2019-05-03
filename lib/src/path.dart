@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'dart:typed_data';
 import 'package:collection/collection.dart';
 import 'path_effect.dart';
+import 'path_modifier.dart';
 import 'dart:math';
 
 /// A extended [Path] object exposing several additional capabilities.
@@ -37,6 +38,7 @@ class PathExtended extends Path {
   double _delta = 1.0;
   double _totalLength = 0;
   PathEffect _pathEffect;
+  PathModifier _pathModifier;
 
   /// Set _delta over a multiple of _baseDelta value produces _delta= 1.0, 0.5, 0.125, 0.0625
   void _setDelta(int truncationFactor) {
@@ -70,6 +72,14 @@ class PathExtended extends Path {
                 double.parse(
                     tangent.position.dy.toStringAsFixed(_truncationFactor))),
             Offset.zero);
+
+        //Here the PathModifier is applied
+        if (this._pathModifier != null) {
+          Offset modifiedOffset =
+              this._pathModifier.transform(tangent.position, tangent.vector);
+          tangent = Tangent(modifiedOffset, tangent.vector);
+        }
+
         this._raw.add(tangent);
       }
       if (this._raw.isNotEmpty)
@@ -107,14 +117,25 @@ class PathExtended extends Path {
     _rebuildPath();
   }
 
+  /// Operates on sampled values
+  void applyPathModifier(PathModifier pathModifier) {
+    this._pathModifier = pathModifier;
+    _resampleRoot();
+  }
+
   /// Build whole Path from scratch
   void _rebuildPath() {
-    if (_raw.isEmpty || _pathEffect == null) {
+    if (_raw.isEmpty || (_pathEffect == null && _pathModifier == null)) {
       //Pass original path object to `this` - no need to rebuilt path
       super.reset();
       super.addPath(this._root, Offset.zero);
       return;
     }
+
+    if (_pathEffect == null) {
+      this._pathEffect = ContinousLine();
+    }
+
     //Init current point
     Path path = Path();
     path.moveTo(_raw.first.position.dx, _raw.first.position.dy);
